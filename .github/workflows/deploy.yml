@@ -10,6 +10,6 @@ jobs:
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v4
-    - run: docker build -f GitHubActions/Dockerfile -t imran-patwa/githubactions GitHubActions
-    - run: echo "sasdadasd_adss_sdfsf_dfsgag_sdafgfddsaf" | docker login -u imran-patwa --password-stdin
-    - run: docker push imran-patwa/githubactions:latest
+    - run: docker build -f GitHubActions/Dockerfile -t imranpatwa/githubactions GitHubActions
+    - run: echo "${{secrets.DOCKERHUB_PASSWORD}}" | docker login -u ${{secrets.DOCKERHUB_USERNAME}} --password-stdin
+    - run: docker push imranpatwa/githubactions:latest
