@@ -1,17 +1,23 @@
 <Project Sdk="Microsoft.NET.Sdk.Web">
 
+  <!-- <PropertyGroup> -->
+    <!-- <TargetFramework>net8.0</TargetFramework> -->
+    <!-- <Nullable>enable</Nullable> -->
+    <!-- <ImplicitUsings>enable</ImplicitUsings> -->
+    <!-- <RuntimeIdentifiers>win-x64</RuntimeIdentifiers> -->
+    <!-- <ContainerRuntimeIdentifier>win-x64</ContainerRuntimeIdentifier> -->
+    <!-- <EnableSdkContainerDebugging>True</EnableSdkContainerDebugging> -->
+    <!-- <ContainerBaseImage>mcr.microsoft.com/dotnet/aspnet:8.0-nanoserver-1809</ContainerBaseImage> -->
+    <!-- <UserSecretsId>e2639276-9a06-4a90-a78a-affd6d4877af</UserSecretsId> -->
+    <!-- <DockerfileContext>.</DockerfileContext> -->
+    <!-- <DockerDefaultTargetOS>Windows</DockerDefaultTargetOS> -->
+  <!-- </PropertyGroup> -->
   <PropertyGroup>
-    <TargetFramework>net8.0</TargetFramework>
-    <Nullable>enable</Nullable>
-    <ImplicitUsings>enable</ImplicitUsings>
-    <RuntimeIdentifiers>win-x64</RuntimeIdentifiers>
-    <ContainerRuntimeIdentifier>win-x64</ContainerRuntimeIdentifier>
-    <EnableSdkContainerDebugging>True</EnableSdkContainerDebugging>
-    <ContainerBaseImage>mcr.microsoft.com/dotnet/aspnet:8.0-nanoserver-1809</ContainerBaseImage>
-    <UserSecretsId>e2639276-9a06-4a90-a78a-affd6d4877af</UserSecretsId>
-    <DockerfileContext>.</DockerfileContext>
-    <DockerDefaultTargetOS>Windows</DockerDefaultTargetOS>
-  </PropertyGroup>
+  <TargetFramework>net8.0</TargetFramework>
+  <Nullable>enable</Nullable>
+  <ImplicitUsings>enable</ImplicitUsings>
+  <UserSecretsId>e2639276-9a06-4a90-a78a-affd6d4877af</UserSecretsId>
+</PropertyGroup>
 
   <ItemGroup>
     <ContainerPort Include="8081" />
