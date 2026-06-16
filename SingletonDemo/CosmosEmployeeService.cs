@@ -14,16 +14,25 @@ public class CosmosEmployeeService : IEmployeeService
     {
         //var database = cosmosClient.GetDatabase(config["CosmosDb:DatabaseName"]);
         //_container = database.GetContainer(config["CosmosDb:ContainerName"]);
-        var databaseName = config["CosmosDb:DatabaseName"];
-        var containerName = config["CosmosDb:ContainerName"];
+        try
+        {
+            var databaseName = config["CosmosDb:DatabaseName"];
+            var containerName = config["CosmosDb:ContainerName"];
 
-        var database = cosmosClient.CreateDatabaseIfNotExistsAsync(databaseName).Result;
+            var database = cosmosClient.CreateDatabaseIfNotExistsAsync(databaseName).Result;
 
-        var container = database.Database
-            .CreateContainerIfNotExistsAsync(containerName, "/id")
-            .Result;
+            var container = database.Database
+                .CreateContainerIfNotExistsAsync(containerName, "/id")
+                .Result;
 
-        _container = container.Container;
+            _container = container.Container;
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine(ex.ToString());
+            throw;
+        }
+
 
     }
 

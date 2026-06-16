@@ -44,6 +44,9 @@ var options = new CosmosClientOptions
 builder.Services.AddSingleton(s =>
 {
     var config = s.GetRequiredService<IConfiguration>();
+    Console.WriteLine($"Endpoint: {config["CosmosDb:Account"]}");
+    Console.WriteLine($"Key Exists: {!string.IsNullOrEmpty(config["CosmosDb:Key"])}");
+
     return new CosmosClient(
         config["CosmosDb:Account"],
         config["CosmosDb:Key"],// Using master key
