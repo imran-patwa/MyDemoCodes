@@ -25,13 +25,13 @@ builder.Services.AddControllersWithViews();
 //    ManagedIdentityClientId = "070c32e3-1d56-4948-8f73-e1ddcaac0dfd" // "961e6cf8-5d46-4f39-9609-c3df3998ce0f"
 //};
 
-var credential = new DefaultAzureCredential();
+//var credential = new DefaultAzureCredential();
 
-AccessToken token = await credential.GetTokenAsync(
-    new TokenRequestContext(
-        new string[] { "https://cosmos.azure.com/.default" }));
+//AccessToken token = await credential.GetTokenAsync(
+//    new TokenRequestContext(
+//        new string[] { "https://cosmos.azure.com/.default" }));
 
-Console.WriteLine("Token acquired successfully");
+//Console.WriteLine("Token acquired successfully");
 
 var options = new CosmosClientOptions
 {
