@@ -1,0 +1,13 @@
+﻿@model Employee
+
+<h3>Are you sure you want to delete?</h3>
+
+<div>
+    <p>@Model.Name</p>
+    <p>@Model.Department</p>
+</div>
+
+<form asp-controller="Employee" asp-action="Delete">
+    <input type="hidden" asp-for="Id" />
+    <button type="submit">Delete</button>
+</form>

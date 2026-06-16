@@ -1,0 +1,23 @@
+﻿@model Employee
+
+<form asp-controller="Employee" asp-action="@ViewContext.RouteData.Values["action"]">
+@* <form asp-action="Create"> *@
+    <input type="hidden" asp-for="Id" />
+
+    <div>
+        <label>Name</label>
+        <input asp-for="Name" />
+    </div>
+
+    <div>
+        <label>Department</label>
+        <input asp-for="Department" />
+    </div>
+
+    <div>
+        <label>Salary</label>
+        <input asp-for="Salary" />
+    </div>
+
+    <button type="submit">Save</button>
+</form>
