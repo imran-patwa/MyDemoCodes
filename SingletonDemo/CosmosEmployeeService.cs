@@ -18,7 +18,8 @@ public class CosmosEmployeeService : IEmployeeService
         {
             var databaseName = config["CosmosDb:DatabaseName"];
             var containerName = config["CosmosDb:ContainerName"];
-
+            Console.WriteLine($"Database: {config["CosmosDb:DatabaseName"]}");
+            Console.WriteLine($"Container: {config["CosmosDb:ContainerName"]}");
             var database = cosmosClient.CreateDatabaseIfNotExistsAsync(databaseName).Result;
 
             var container = database.Database
