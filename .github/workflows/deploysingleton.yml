@@ -36,6 +36,12 @@ jobs:
 
           sudo cp cosmos_emulator.cert /usr/local/share/ca-certificates/
           sudo update-ca-certificates
+          
+          # Optional: add emulator in image.
+           cosmosdb:
+              image: mcr.microsoft.com/cosmosdb/linux/azure-cosmos-emulator:vnext-preview
+              ports:
+              - "8081:8081"
 
       # Optional: wait for emulator startup
       - name: Wait for Cosmos Emulator
