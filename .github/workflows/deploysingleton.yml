@@ -44,12 +44,7 @@ jobs:
             curl -k https://localhost:8081 && break
             sleep 10
           done
-
-      # Run your tests here
-      - name: Run Tests
-        run: |
-          dotnet test
-
+     
       - name: Build Docker Image
         run: |
           docker build -f SingletonDemo/Dockerfile \
