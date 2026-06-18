@@ -8,15 +8,6 @@ on:
 jobs:
   deploy:
     runs-on: ubuntu-latest
-
-    services:
-      cosmosdb:
-        image: mcr.microsoft.com/cosmosdb/linux/azure-cosmos-emulator:vnext-preview
-        ports:
-          - 8081:8081
-        env:
-          PROTOCOL: https
-
     env:
       COSMOSDB_CONNECTION_STRING: ${{ secrets.COSMOSDB_CONNECTION_STRING }}
       COSMOSDB_DATABASE_NAME: ${{ vars.COSMOSDB_DATABASE_NAME }}
@@ -30,7 +21,7 @@ jobs:
         run: |
           sudo apt update
           sudo apt install -y openssl
-          openssl s_client -connect localhost:8081 </dev/null \
+          openssl s_client -connect localhost:18081 </dev/null \
             | sed -ne '/-BEGIN CERTIFICATE-/,/-END CERTIFICATE-/p' \
             > cosmos_emulator.cert
 
@@ -42,7 +33,7 @@ jobs:
         run: |
           docker run -d \
             --name cosmosdb \
-            -p 8081:8081 \
+            -p 18081:8081 \
             mcr.microsoft.com/cosmosdb/linux/azure-cosmos-emulator:vnext-preview
      
       - name: Build Docker Image
