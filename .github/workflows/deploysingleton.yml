@@ -36,18 +36,16 @@ jobs:
 
           sudo cp cosmos_emulator.cert /usr/local/share/ca-certificates/
           sudo update-ca-certificates
-          
-          # Optional: add emulator in image.
-           cosmosdb:
-              image: mcr.microsoft.com/cosmosdb/linux/azure-cosmos-emulator:vnext-preview
-              ports:
-              - "8081:8081"
-
+                  
       # Optional: wait for emulator startup
       - name: Wait for Cosmos Emulator
         run: |
-          for i in {1..30}; do
-            curl -k https://localhost:8081 && break
+          for i in {1..60}; do
+            if curl -k https://localhost:8081 >/dev/null 2>&1; then
+              echo "Cosmos Emulator is ready"
+              break
+            fi
+            echo "Waiting for Cosmos Emulator..."
             sleep 10
           done
      
