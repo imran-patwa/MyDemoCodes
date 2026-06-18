@@ -20,12 +20,13 @@ public class CosmosEmployeeService : IEmployeeService
             var containerName = config["CosmosDb:ContainerName"];
             Console.WriteLine($"Database: {config["CosmosDb:DatabaseName"]}");
             Console.WriteLine($"Container: {config["CosmosDb:ContainerName"]}");
+            Console.WriteLine("Connecting to Cosmos...");            
             var database = cosmosClient.CreateDatabaseIfNotExistsAsync(databaseName).Result;
-
+            Console.WriteLine("Database ready");
             var container = database.Database
                 .CreateContainerIfNotExistsAsync(containerName, "/id")
                 .Result;
-
+            Console.WriteLine("Container ready");
             _container = container.Container;
         }
         catch (Exception ex)
