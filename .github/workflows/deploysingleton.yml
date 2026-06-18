@@ -40,14 +40,10 @@ jobs:
       # Optional: wait for emulator startup
       - name: Wait for Cosmos Emulator
         run: |
-          for i in {1..60}; do
-            if curl -k https://localhost:8081 >/dev/null 2>&1; then
-              echo "Cosmos Emulator is ready"
-              break
-            fi
-            echo "Waiting for Cosmos Emulator..."
-            sleep 10
-          done
+          docker run -d \
+            --name cosmosdb \
+            -p 8081:8081 \
+            mcr.microsoft.com/cosmosdb/linux/azure-cosmos-emulator:vnext-preview
      
       - name: Build Docker Image
         run: |
