@@ -38,6 +38,18 @@ var options = new CosmosClientOptions
     ApplicationName = "SingletonDemo",
     RequestTimeout = TimeSpan.FromSeconds(60) //Increase SDK Timeout
     //,AllowBulkExecution = true // Bulk Execution example.
+
+    // Added below code to allow the application to work on docker container on local cosmos db emulator (start)
+    ,
+    HttpClientFactory = () =>
+    {
+        var handler = new HttpClientHandler();
+        handler.ServerCertificateCustomValidationCallback =
+            HttpClientHandler.DangerousAcceptAnyServerCertificateValidator;
+
+        return new HttpClient(handler);
+    }
+    // (end)
 };
 
 // Singleton CosmosClient
