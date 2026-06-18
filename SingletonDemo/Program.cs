@@ -48,7 +48,8 @@ var options = new CosmosClientOptions
             HttpClientHandler.DangerousAcceptAnyServerCertificateValidator;
 
         return new HttpClient(handler);
-    }
+    },
+    ConnectionMode = ConnectionMode.Gateway
     // (end)
 };
 
