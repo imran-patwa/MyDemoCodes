@@ -1,13 +1,66 @@
 name: Deploy
+
 on:
- push:
-  branches: [ "SingletonDemo" ]
-  
+  push:
+    branches:
+      - SingletonDemo
+
 jobs:
- deploy:
-   runs-on: ubuntu-latest
-   steps:
-   - uses: actions/checkout@v4
-   - run: docker build -f SingletonDemo/Dockerfile -t imranpatwa/singletondemo SingletonDemo
-   - run: echo "${{secrets.DOCKERHUB_PASSWORD}}" | docker login -u ${{secrets.DOCKERHUB_USERNAME}} --password-stdin   
-   - run: docker push imranpatwa/singletondemo:latest
+  deploy:
+    runs-on: ubuntu-latest
+
+    services:
+      cosmosdb:
+        image: mcr.microsoft.com/cosmosdb/linux/azure-cosmos-emulator:vnext-preview
+        ports:
+          - 8081:8081
+        env:
+          PROTOCOL: https
+
+    env:
+      COSMOSDB_CONNECTION_STRING: ${{ secrets.COSMOSDB_CONNECTION_STRING }}
+      COSMOSDB_DATABASE_NAME: ${{ vars.COSMOSDB_DATABASE_NAME }}
+      COSMOSDB_CONTAINER_NAME: ${{ vars.COSMOSDB_CONTAINER_NAME }}
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Export Cosmos DB Emulator Certificate
+        run: |
+          sudo apt update
+          sudo apt install -y openssl
+          openssl s_client -connect localhost:8081 </dev/null \
+            | sed -ne '/-BEGIN CERTIFICATE-/,/-END CERTIFICATE-/p' \
+            > cosmos_emulator.cert
+
+          sudo cp cosmos_emulator.cert /usr/local/share/ca-certificates/
+          sudo update-ca-certificates
+
+      # Optional: wait for emulator startup
+      - name: Wait for Cosmos Emulator
+        run: |
+          for i in {1..30}; do
+            curl -k https://localhost:8081 && break
+            sleep 10
+          done
+
+      # Run your tests here
+      - name: Run Tests
+        run: |
+          dotnet test
+
+      - name: Build Docker Image
+        run: |
+          docker build -f SingletonDemo/Dockerfile \
+            -t imranpatwa/singletondemo:latest \
+            SingletonDemo
+
+      - name: Docker Login
+        run: |
+          echo "${{ secrets.DOCKERHUB_PASSWORD }}" | \
+          docker login -u "${{ secrets.DOCKERHUB_USERNAME }}" --password-stdin
+
+      - name: Push Docker Image
+        run: |
+          docker push imranpatwa/singletondemo:latest
