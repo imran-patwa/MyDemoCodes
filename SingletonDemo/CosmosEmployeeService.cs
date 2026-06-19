@@ -31,7 +31,14 @@ public class CosmosEmployeeService : IEmployeeService
         }
         catch (Exception ex)
         {
+            Console.WriteLine("===== COSMOS ERROR =====");
             Console.WriteLine(ex.ToString());
+
+            if (ex.InnerException != null)
+            {
+                Console.WriteLine("===== INNER EXCEPTION =====");
+                Console.WriteLine(ex.InnerException.ToString());
+            }
             throw;
         }
 

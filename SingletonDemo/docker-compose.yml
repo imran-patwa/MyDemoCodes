@@ -1,0 +1,24 @@
+﻿version: '3.8'
+
+services:
+  cosmosdb:
+    image: mcr.microsoft.com/cosmosdb/linux/azure-cosmos-emulator:vnext-preview
+    container_name: cosmosdb
+    hostname: cosmosdb
+    ports:
+      - "8081:8081"
+    environment:
+      PROTOCOL: https
+    restart: unless-stopped
+
+  singletondemo:
+    image: imranpatwa/singletondemo:latest
+    container_name: singletondemo
+    depends_on:
+      - cosmosdb
+    ports:
+      - "8080:8080"
+    environment:
+      COSMOSDB_CONNECTION_STRING: "AccountEndpoint=https://cosmosdb:8081/;AccountKey=C2y6yDjf5/R+ob0N8A7Cgv30VRDJIWEHLM+4QDU5DE2nQ9nDuVTqobD4b8mGGyPMbIZnqyMsEcaGQy67XIw/Jw=="
+      COSMOSDB_DATABASE_NAME: "SingleTonExampleDB"
+      COSMOSDB_CONTAINER_NAME: "EmployeeContainer"
