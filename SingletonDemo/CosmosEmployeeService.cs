@@ -20,8 +20,12 @@ public class CosmosEmployeeService : IEmployeeService
             var containerName = config["CosmosDb:ContainerName"];
             Console.WriteLine($"Database: {config["CosmosDb:DatabaseName"]}");
             Console.WriteLine($"Container: {config["CosmosDb:ContainerName"]}");
-            Console.WriteLine("Connecting to Cosmos...");            
-            var database = cosmosClient.CreateDatabaseIfNotExistsAsync(databaseName).Result;
+            Console.WriteLine("Connecting to Cosmos...");
+            //var database = cosmosClient.CreateDatabaseIfNotExistsAsync(databaseName).Result;
+            var database =
+            cosmosClient.CreateDatabaseIfNotExistsAsync(databaseName)
+                .GetAwaiter()
+                .GetResult();
             Console.WriteLine("Database ready");
             var container = database.Database
                 .CreateContainerIfNotExistsAsync(containerName, "/id")
@@ -31,14 +35,18 @@ public class CosmosEmployeeService : IEmployeeService
         }
         catch (Exception ex)
         {
-            Console.WriteLine("===== COSMOS ERROR =====");
-            Console.WriteLine(ex.ToString());
+            Console.WriteLine("TOP:");
+            Console.WriteLine(ex);
 
-            if (ex.InnerException != null)
+            var inner = ex.InnerException;
+
+            while (inner != null)
             {
-                Console.WriteLine("===== INNER EXCEPTION =====");
-                Console.WriteLine(ex.InnerException.ToString());
+                Console.WriteLine("INNER:");
+                Console.WriteLine(inner);
+                inner = inner.InnerException;
             }
+            Console.WriteLine("Completed Error");
             throw;
         }
 

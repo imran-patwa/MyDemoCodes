@@ -49,7 +49,8 @@ var options = new CosmosClientOptions
 
         return new HttpClient(handler);
     },
-    ConnectionMode = ConnectionMode.Gateway
+    ConnectionMode = ConnectionMode.Gateway,
+    LimitToEndpoint = true
     // (end)
 };
 
