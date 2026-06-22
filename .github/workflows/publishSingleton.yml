@@ -24,5 +24,48 @@ jobs:
       run: dotnet build SingletonDemo/SingletonDemo.sln --no-restore
     - name: Test 
       run: dotnet test SingletonDemo/SingletonDemo.sln --no-build --verbosity normal
-    - name: Publish
-      run: dotnet publish -c Release -o publish
+    - name: Publish Application
+      run: |
+        dotnet publish SingletonDemo/SingletonDemo.sln `
+          --configuration Release `
+          --output D:\GitHubActions\Publish\SingletonDemo
+    - name: Stop IIS Website
+      shell: powershell
+      run: |
+          Import-Module WebAdministration
+          Stop-Website -Name "SingletonDemo"
+
+    # Optional: Stop App Pool
+    - name: Stop IIS App Pool
+      shell: powershell
+      run: |
+          Import-Module WebAdministration
+          Stop-WebAppPool -Name "SingletonDemoAppPool"
+
+    - name: Copy Files to IIS Folder
+      shell: powershell
+      run: |
+          $source = "D:\GitHubActions\Publish\SingletonDemo\*"
+          $destination = "C:\inetpub\wwwroot\SingletonDemo"
+
+          if (!(Test-Path $destination)) {
+              New-Item -ItemType Directory -Path $destination -Force
+          }
+
+          Copy-Item $source `
+                    -Destination $destination `
+                    -Recurse `
+                    -Force
+
+     # Optional: Start App Pool
+    - name: Start IIS App Pool
+      shell: powershell
+      run: |
+          Import-Module WebAdministration
+          Start-WebAppPool -Name "SingletonDemoAppPool"
+
+    - name: Start IIS Website
+      shell: powershell
+      run: |
+          Import-Module WebAdministration
+          Start-Website -Name "SingletonDemo"
